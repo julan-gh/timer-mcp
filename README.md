@@ -19,27 +19,20 @@ Both timestamps are taken **server-side**, so the constant part of the pipeline 
 
 If you believe your pipeline is asymmetric, bias it out: `timer_config` accepts `start_offset_ms` / `stop_offset_ms`, subtracted from every result. `raw_elapsed_ms` (pure monotonic) is always returned alongside the adjusted `elapsed_ms`.
 
-## Setup (end to end)
+## Setup
 
 **Prerequisite:** Node.js ≥ 18 (`node --version`).
 
-**1. Install** — `dist/` ships pre-built; runtime deps only:
+TimerMCP is on npm — no clone or build needed.
+
+**Claude Code** (one command):
 
 ```bash
-cd timermcp-mcp-server
-npm install --omit=dev
+claude mcp add timermcp -- npx -y timermcp
+claude mcp list   # should show timermcp ✓ connected
 ```
 
-(Only rebuild if you edit `src/`: `npm install && npm run build`.)
-
-**2. Verify it runs:**
-
-```bash
-node dist/index.js --version   # prints banner and exits
-npm run smoke                  # optional: full 18-assertion suite (needs plain npm install)
-```
-
-**3a. Claude Desktop** — edit `claude_desktop_config.json`:
+**Claude Desktop** — edit `claude_desktop_config.json`:
 
 - macOS: `~/Library/Application Support/Claude/claude_desktop_config.json`
 - Windows: `%APPDATA%\Claude\claude_desktop_config.json`
@@ -49,25 +42,32 @@ npm run smoke                  # optional: full 18-assertion suite (needs plain 
 {
   "mcpServers": {
     "timermcp": {
-      "command": "node",
-      "args": ["/absolute/path/to/timermcp-mcp-server/dist/index.js"]
+      "command": "npx",
+      "args": ["-y", "timermcp"]
     }
   }
 }
 ```
 
-On Windows use forward slashes or escaped backslashes in the path: `"C:/tools/timermcp-mcp-server/dist/index.js"`.
-
-**3b. Claude Code:**
+<details>
+<summary>Running from a clone instead (for development)</summary>
 
 ```bash
-claude mcp add timermcp -- node /absolute/path/to/timermcp-mcp-server/dist/index.js
-claude mcp list   # should show timermcp ✓ connected
+git clone https://github.com/julanbasnet/timermcp.git
+cd timermcp
+npm install && npm run build
+node dist/index.js --version   # prints banner and exits
+npm run smoke                  # full 18-assertion suite
+claude mcp add timermcp -- node /absolute/path/to/timermcp/dist/index.js
 ```
 
-**4.** Fully quit and reopen the client (Desktop: quit from the menu/tray, not just close the window). Say *"start the timer"* and open **http://localhost:5717** — the wall display.
+On Windows use forward slashes or escaped backslashes in config paths: `"C:/tools/timermcp/dist/index.js"`.
 
-**Inspector (optional):** `npx @modelcontextprotocol/inspector node dist/index.js` for an interactive tool console.
+</details>
+
+After adding, fully quit and reopen the client (Desktop: quit from the menu/tray, not just close the window). Say *"start the timer"* and open **http://localhost:5717** — the wall display.
+
+**Inspector (optional):** `npx @modelcontextprotocol/inspector npx -y timermcp` for an interactive tool console.
 
 ## Talk to it
 
