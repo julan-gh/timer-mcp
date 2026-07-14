@@ -7,6 +7,10 @@ A millisecond-precision MCP timer server. Say "start the timer" to Claude — th
 🏆 NEW PERSONAL BEST — 18.455 faster than the old record!
 ```
 
+With the free cloud connector ([timermcp.com](https://timermcp.com)), countdowns render as a live ticking card right in the chat — desktop and mobile:
+
+![A live TimerMCP countdown card ticking inside a Claude chat](https://raw.githubusercontent.com/julanbasnet/timermcp/main/docs/card-in-claude.png)
+
 ## Why the milliseconds are honest (the latency math)
 
 You say "start" at **t₀**; the command reaches the server after delay **d₁** (typing + model + transport). Server stamps **S₁ = t₀ + d₁**. You say "stop" at **t₁**, stamped **S₂ = t₁ + d₂**.
