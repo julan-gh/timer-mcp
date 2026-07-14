@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <style>
+      .brand { font: 700 26px ui-monospace, 'SF Mono', Menlo, Consolas, monospace; fill: #A89B8C; letter-spacing: 6px; }
+      .name  { font: 700 54px ui-monospace, 'SF Mono', Menlo, Consolas, monospace; fill: #F3EDE4; }
+      .time  { font: 700 150px ui-monospace, 'SF Mono', Menlo, Consolas, monospace; fill: #FFB000; }
+      .badge { font: 800 24px ui-monospace, monospace; fill: #1A1512; letter-spacing: 2px; }
+      .lbl   { font: 500 22px ui-monospace, monospace; fill: #A89B8C; }
+      .val   { font: 700 22px ui-monospace, monospace; fill: #F3EDE4; }
+      .meta  { font: 500 22px ui-monospace, monospace; fill: #6E6357; }
+      .tgt   { font: 700 26px ui-monospace, monospace; }
+    </style>
+    <filter id="glow"><feGaussianBlur stdDeviation="6" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  </defs>
+  <rect width="1200" height="630" fill="#14100D"/>
+  <rect x="0" y="0" width="1200" height="6" fill="#FFB000"/>
+  <text x="80" y="86" class="brand">SPLITSECOND ⏱ OFFICIAL TIME</text>
+  <g>
+        <rect x="80" y="118" rx="6" width="288" height="44" fill="#F5C84C"/>
+        <text x="224" y="147" text-anchor="middle" class="badge">★ PERSONAL BEST</text>
+      </g>
+  <text x="80" y="240" class="name">ship the landing page</text>
+  <text x="74" y="392" class="time" filter="url(#glow)">4:07.312</text>
+  
+    <text x="80" y="470" class="lbl">hero section done</text>
+    <text x="520" y="470" class="val" text-anchor="end">1:01.204</text>
+    <text x="80" y="500" class="lbl">pricing table</text>
+    <text x="520" y="500" class="val" text-anchor="end">2:22.876</text>
+    <text x="80" y="530" class="lbl">deployed to vercel</text>
+    <text x="520" y="530" class="val" text-anchor="end">3:51.044</text>
+  
+  <text x="80" y="590" class="meta">Jul 12, 2026, 8:21 PM · voice-timed via MCP · run #a1b2c3d4</text>
+</svg>
