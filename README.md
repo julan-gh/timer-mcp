@@ -90,6 +90,7 @@ After adding, fully quit and reopen the client (Desktop: quit from the menu/tray
 ## The viral bits
 
 - **Live wall display** — electric-cyan timing console at `localhost:5717`, streams every millisecond over SSE. Put it on a second monitor or your phone; it reacts the instant Claude acts. Buttons + keyboard (space = split, enter = start/stop) work from the browser too, including a countdown-target field for browser-started pomodoros.
+- **Countdown chime** — flip the 🔔 Sound toggle on the wall and every countdown rings out loud the moment it hits zero. (Off by default; browsers require one click before a page may play audio.)
 - **XP, levels & achievements** — every finished run and tracked minute earns XP. Ten ranks from ROOKIE to TIME LORD, a day-streak counter, and a 12-medal achievement shelf (PHOTO FINISH, RECORD BREAKER, BULLSEYE, MIDNIGHT OIL, RACE DAY…), all derived from your local history. Level-ups and unlocks fire toasts + confetti on the wall.
 - **Personal bests & speedrun splits** — every named timer keeps a PB. Splits compare against the same checkpoint on your PB run, LiveSplit-style: *"1.204 AHEAD of PB pace 🟢"*. Confetti on new records.
 - **Race mode** — comma-separated names start on one shared nanosecond stamp (measured Δ in tests: 0.003ms).

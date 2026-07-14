@@ -1,6 +1,6 @@
 {
   "name": "timermcp",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "TimerMCP \u2014 a millisecond-precision talking stopwatch for Claude via MCP. Voice-start, voice-stop, latency-cancelling math, gamified live wall dashboard (XP, ranks, achievements, streaks), personal bests, speedrun splits, shareable result cards.",
   "type": "module",
   "main": "dist/index.js",

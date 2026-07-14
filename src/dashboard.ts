@@ -307,6 +307,7 @@ const HTML = `<!doctype html>
   <button id="bStop">Stop</button>
   <button id="bCancel">Cancel</button>
   <button id="bFun" aria-pressed="false">Fun mode: off</button>
+  <button id="bSound" aria-pressed="false">🔕 Sound: off</button>
   <span class="hint">space = split &middot; enter = start/stop</span>
 </footer>
 <div id="toast" role="status"></div>
@@ -333,6 +334,37 @@ const HTML = `<!doctype html>
     b.textContent = fun ? "Fun mode: on" : "Fun mode: off";
     b.setAttribute("aria-pressed", fun ? "true" : "false");
   }
+
+  // Sound is opt-in. Browsers keep an AudioContext suspended until a user
+  // gesture, so the toggle click (and any later click) doubles as the unlock.
+  var sound = store("tm_sound") === true;
+  var actx = null;
+  function audio(){
+    if (!actx) { try { actx = new (window.AudioContext || window.webkitAudioContext)(); } catch(e){} }
+    if (actx && actx.state === "suspended") { actx.resume().catch(function(){}); }
+    return actx;
+  }
+  function chime(){
+    if (!sound) return;
+    var ctx = audio();
+    if (!ctx || ctx.state !== "running") return;
+    var t0 = ctx.currentTime;
+    [880, 1174.66, 1567.98].forEach(function(freq, i){
+      var o = ctx.createOscillator(), g = ctx.createGain();
+      o.type = "sine"; o.frequency.value = freq;
+      g.gain.setValueAtTime(0.0001, t0 + i*0.18);
+      g.gain.exponentialRampToValueAtTime(0.22, t0 + i*0.18 + 0.02);
+      g.gain.exponentialRampToValueAtTime(0.0001, t0 + i*0.18 + 0.5);
+      o.connect(g); g.connect(ctx.destination);
+      o.start(t0 + i*0.18); o.stop(t0 + i*0.18 + 0.55);
+    });
+  }
+  function applySound(){
+    var b = $("bSound");
+    b.textContent = sound ? "🔔 Sound: on" : "🔕 Sound: off";
+    b.setAttribute("aria-pressed", sound ? "true" : "false");
+  }
+  document.addEventListener("pointerdown", function(){ if (sound) audio(); }, { passive: true });
 
   function fmt(ms){
     var sign = ms < 0 ? "-" : ""; var v = Math.abs(ms);
@@ -396,9 +428,18 @@ const HTML = `<!doctype html>
   }
 
   // ------------------------------------------------------------ live loop
+  var lastRem = {};   // per-timer remaining ms, to catch the zero crossing
   function render(){
     if (!state) return;
     var running = state.running || [];
+    for (var ci = 0; ci < running.length; ci++) {
+      var ct = running[ci];
+      if (ct.target_ms == null) continue;
+      var crem = ct.target_ms - liveMs(ct);
+      var cprev = lastRem[ct.name];
+      if (cprev != null && cprev > 0 && crem <= 0) chime();
+      lastRem[ct.name] = crem;
+    }
     var hero = running[0];
     var heroEl = $("hero");
     var tbar = $("tbar");
@@ -565,7 +606,12 @@ const HTML = `<!doctype html>
   $("bStop").onclick   = function(){ api("stop"); };
   $("bCancel").onclick = function(){ api("cancel"); };
   $("bFun").onclick    = function(){ fun = !fun; store("tm_fun", fun); applyMode(); };
+  $("bSound").onclick  = function(){
+    sound = !sound; store("tm_sound", sound); applySound();
+    if (sound) chime();   // gesture unlock + audible confirmation
+  };
   applyMode();
+  applySound();
   document.addEventListener("keydown", function(e){
     if (e.target && e.target.tagName === "INPUT") return;
     if (e.code === "Space") { e.preventDefault(); api("split"); }
