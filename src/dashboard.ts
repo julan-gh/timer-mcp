@@ -430,6 +430,9 @@ const HTML = `<!doctype html>
   // ------------------------------------------------------------ live loop
   var lastRem = {};   // per-timer remaining ms, to catch the zero crossing
   function render(){
+    // Always re-queue first: if the first frame fires before the initial SSE
+    // snapshot lands, an early return must not kill the loop forever.
+    requestAnimationFrame(render);
     if (!state) return;
     var running = state.running || [];
     for (var ci = 0; ci < running.length; ci++) {
@@ -484,7 +487,6 @@ const HTML = `<!doctype html>
       oth += "<div class=chip><span class=n>" + esc(t.name) + "</span><span class=t>" + fmt(liveMs(t)).flat + "</span></div>";
     }
     $("others").innerHTML = oth;
-    requestAnimationFrame(render);
   }
 
   // ------------------------------------------------------- snapshot render
