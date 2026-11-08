@@ -92,6 +92,11 @@ const apiStart = await fetch(`http://127.0.0.1:${PORT}/api/start`, {
   method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ name: "browser" }),
 }).then((r) => r.json());
 assert(apiStart[0]?.name === "browser", "browser POST /api/start works");
+const badRequest = await fetch(`http://127.0.0.1:${PORT}/api/start`, {
+  method: "POST", headers: { "content-type": "application/json" }, body: "{",
+});
+const badRequestBody = await badRequest.json();
+assert(badRequest.status === 400 && badRequestBody.error === "request failed", "dashboard errors do not expose internal details");
 await fetch(`http://127.0.0.1:${PORT}/api/cancel`, {
   method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ name: "browser" }),
 });

@@ -84,8 +84,9 @@ export function startDashboard(
         res.writeHead(404).end("not found");
       }
     } catch (err) {
+      console.error("[timermcp] dashboard request failed:", err);
       res.writeHead(400, { "content-type": "application/json" });
-      res.end(JSON.stringify({ error: err instanceof Error ? err.message : String(err) }));
+      res.end(JSON.stringify({ error: "request failed" }));
     }
   });
 
